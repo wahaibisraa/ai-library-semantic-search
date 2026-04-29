@@ -46,3 +46,8 @@ This project is an AI-powered semantic search system designed to improve how use
 cd backend
 pip install -r requirements.txt
 python app.py
+
+### Frontend
+cd frontend
+npm install
+npm start
