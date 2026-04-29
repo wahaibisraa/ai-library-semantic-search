@@ -41,14 +41,12 @@ This project is an AI-powered semantic search system designed to improve how use
 
 ## ▶️ How to Run
 
-### Backend
-```bash
+
 cd backend
 pip install -r requirements.txt
 python app.py
 
-### Frontend
-```bash
+
 cd frontend
 npm install
 npm start
