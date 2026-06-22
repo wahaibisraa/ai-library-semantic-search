@@ -39,19 +39,34 @@ body {
   color: #312e81;
 }
 
-.nav-badges {
+.nav-tabs {
   display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+  gap: 8px;
 }
 
-.nav-badges span {
+.nav-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   background: #eef2ff;
   color: #4338ca;
-  padding: 9px 14px;
+  padding: 9px 18px;
   border-radius: 999px;
   font-size: 13px;
   font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.nav-tab:hover {
+  background: #e0e7ff;
+}
+
+.nav-tab.active {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  color: white;
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.28);
 }
 
 .hero {
@@ -150,6 +165,41 @@ body {
   to {
     transform: rotate(360deg);
   }
+}
+
+.mode-selector {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 18px 0 14px;
+  flex-wrap: wrap;
+}
+
+.mode-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1.5px solid #c7d2fe;
+  background: rgba(255, 255, 255, 0.9);
+  color: #4338ca;
+  padding: 10px 20px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 14px;
+  transition: background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, color 0.18s ease;
+}
+
+.mode-btn:hover {
+  background: #eef2ff;
+  border-color: #818cf8;
+}
+
+.mode-btn.active {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 6px 22px rgba(79, 70, 229, 0.32);
 }
 
 .prompt-chips {
@@ -354,7 +404,7 @@ body {
     padding: 0 22px;
   }
 
-  .nav-badges {
+  .nav-tabs {
     display: none;
   }
 

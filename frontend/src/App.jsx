@@ -9,12 +9,23 @@ import {
   UserRound,
   Loader2,
   Star,
+  BarChart2,
 } from "lucide-react";
 import "./App.css";
+import Analytics from "./Analytics.jsx";
+
+const MODE_OPTIONS = [
+  { key: "search", label: "Search", icon: Search },
+  { key: "recommend", label: "Recommend", icon: UserRound },
+  { key: "study", label: "Study", icon: GraduationCap },
+  { key: "research", label: "Research", icon: Compass },
+];
 
 function App() {
+  const [page, setPage] = useState("home");
   const [query, setQuery] = useState("");
   const [mode, setMode] = useState("");
+  const [manualMode, setManualMode] = useState(null);
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -31,9 +42,9 @@ function App() {
 
     try {
       setLoading(true);
-      const response = await axios.post("http://127.0.0.1:5000/smart-search", {
-        query,
-      });
+      const payload = { query };
+      if (manualMode) payload.force_mode = manualMode;
+      const response = await axios.post("http://127.0.0.1:5000/smart-search", payload);
 
       setMode(response.data.mode);
       setResults(response.data.results);
@@ -92,15 +103,29 @@ function App() {
           <span>Smart AI Library</span>
         </div>
 
-        <div className="nav-badges">
-          <span>Semantic Search</span>
-          <span>Recommendations</span>
-          <span>Study Mode</span>
-          <span>Research Roadmap</span>
+        <div className="nav-tabs">
+          <button
+            className={`nav-tab${page === "home" ? " active" : ""}`}
+            onClick={() => setPage("home")}
+          >
+            <Search size={15} />
+            Search
+          </button>
+          <button
+            className={`nav-tab${page === "analytics" ? " active" : ""}`}
+            onClick={() => setPage("analytics")}
+          >
+            <BarChart2 size={15} />
+            Analytics
+          </button>
         </div>
       </nav>
 
-      <section className="hero">
+      {page === "analytics" ? (
+        <Analytics />
+      ) : (
+        <>
+        <section className="hero">
         <div className="hero-badge">
           <Sparkles size={18} />
           AI-Powered Academic Assistant
@@ -130,6 +155,20 @@ function App() {
               "Search"
             )}
           </button>
+        </div>
+
+        <div className="mode-selector">
+          {MODE_OPTIONS.map(({ key, label, icon: Icon }) => (
+            <button
+              key={key}
+              className={`mode-btn${manualMode === key ? " active" : ""}`}
+              onClick={() => setManualMode(manualMode === key ? null : key)}
+              title={manualMode === key ? `Click to disable ${label} override` : `Force ${label} mode`}
+            >
+              <Icon size={15} />
+              {label}
+            </button>
+          ))}
         </div>
 
         <div className="prompt-chips">
@@ -199,6 +238,8 @@ function App() {
             </div>
           )}
         </section>
+      )}
+        </>
       )}
     </div>
   );

@@ -1,0 +1,374 @@
+.analytics {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 48px 24px 90px;
+}
+
+.analytics-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 36px;
+}
+
+.analytics-header svg {
+  color: #4f46e5;
+  flex-shrink: 0;
+}
+
+.analytics-header h1 {
+  font-size: 34px;
+  font-weight: 900;
+  color: #312e81;
+  margin: 0 0 4px;
+  letter-spacing: -1px;
+}
+
+.analytics-header p {
+  margin: 0;
+  color: #64748b;
+  font-size: 15px;
+}
+
+/* ── Stat summary row ── */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 22px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.stat-value {
+  font-size: 34px;
+  font-weight: 900;
+  color: #4f46e5;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: #334155;
+}
+
+.stat-sub {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+/* ── Chart grid ── */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+}
+
+.chart-card {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
+  padding: 26px 24px 20px;
+  box-shadow: 0 12px 36px rgba(15, 23, 42, 0.07);
+}
+
+.chart-card.span-2 {
+  grid-column: span 2;
+}
+
+.chart-header {
+  margin-bottom: 20px;
+}
+
+.chart-header h2 {
+  font-size: 18px;
+  font-weight: 800;
+  color: #312e81;
+  margin: 0 0 4px;
+}
+
+.chart-header p {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0;
+}
+
+/* ── Pie legend ── */
+.pie-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  justify-content: center;
+  margin-top: 14px;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #475569;
+  font-weight: 600;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legend-item strong {
+  color: #0f172a;
+  font-weight: 800;
+}
+
+/* ── Loading / error states ── */
+.analytics-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: 40vh;
+  color: #64748b;
+  font-size: 16px;
+}
+
+.analytics-state svg {
+  color: #4f46e5;
+}
+
+.analytics-state.error svg {
+  color: #dc2626;
+}
+
+.analytics-state.error {
+  color: #dc2626;
+}
+
+/* ════════════════════════════════════════
+   Performance Comparison
+   ════════════════════════════════════════ */
+
+.perf-section {
+  margin-top: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.perf-section-header {
+  margin-bottom: 4px;
+}
+
+.perf-section-header h2 {
+  font-size: 22px;
+  font-weight: 800;
+  color: #312e81;
+  margin: 0 0 6px;
+  letter-spacing: -0.5px;
+}
+
+.perf-section-header p {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
+  max-width: 700px;
+}
+
+.perf-chart {
+  /* same as .chart-card — just a semantic alias */
+}
+
+/* ── Metric cell ── */
+.metric-cell {
+  padding: 10px 14px !important;
+  vertical-align: middle;
+}
+
+.metric-val {
+  display: block;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+.mini-bar-track {
+  height: 4px;
+  background: #f1f5f9;
+  border-radius: 2px;
+  margin-top: 5px;
+  width: 64px;
+  overflow: hidden;
+}
+
+.mini-bar-fill {
+  height: 4px;
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+/* ── Table wrapper ── */
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 16px;
+}
+
+.perf-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  min-width: 980px;
+}
+
+.perf-table thead tr:first-child th {
+  border-bottom: none;
+  padding-bottom: 6px;
+}
+
+.perf-table thead tr:last-child th {
+  padding-top: 4px;
+}
+
+.th-mode {
+  text-align: left;
+  padding: 10px 16px 10px 0;
+  color: #334155;
+  font-weight: 700;
+  font-size: 13px;
+  white-space: nowrap;
+  vertical-align: bottom;
+}
+
+.th-center {
+  text-align: center;
+  color: #334155;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.th-narrow {
+  width: 64px;
+}
+
+.th-group {
+  font-size: 12px;
+  font-weight: 800;
+  padding: 8px 14px;
+  border-radius: 6px 6px 0 0;
+  letter-spacing: 0.2px;
+}
+
+.th-kw {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.th-sem {
+  background: #eef2ff;
+  color: #4338ca;
+}
+
+.th-metric {
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 0.5px;
+  padding: 6px 10px;
+}
+
+/* ── Table body ── */
+.perf-table tbody tr {
+  border-top: 1px solid #f1f5f9;
+  transition: background 0.12s ease;
+}
+
+.perf-table tbody tr:hover {
+  background: #fafbff;
+}
+
+.td-mode {
+  padding: 10px 16px 10px 0;
+  font-weight: 700;
+  color: #1e293b;
+  white-space: nowrap;
+}
+
+.td-center {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.td-sub {
+  font-size: 13px;
+  color: #94a3b8;
+  font-weight: 600;
+  padding: 10px 8px;
+}
+
+/* ── Delta column ── */
+.td-delta {
+  text-align: center;
+  vertical-align: middle;
+  font-weight: 800;
+  font-size: 14px;
+  padding: 10px 14px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.td-delta.pos {
+  color: #059669;
+}
+
+.td-delta.neg {
+  color: #dc2626;
+}
+
+/* ── Methodology note ── */
+.methodology-note {
+  font-size: 12px;
+  color: #94a3b8;
+  line-height: 1.55;
+  margin: 0;
+  padding: 12px 0 0;
+  border-top: 1px solid #f1f5f9;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .stat-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-card.span-2 {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 560px) {
+  .stat-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .analytics-header h1 {
+    font-size: 26px;
+  }
+}
