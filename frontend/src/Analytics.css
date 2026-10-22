@@ -1,32 +1,31 @@
 .analytics {
-  max-width: 1180px;
+  max-width: var(--content-width);
   margin: 0 auto;
-  padding: 48px 24px 90px;
+  padding: var(--space-7) var(--space-5) var(--space-8);
 }
 
 .analytics-header {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 36px;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--border);
 }
 
 .analytics-header svg {
-  color: #4f46e5;
+  color: var(--gold-600);
   flex-shrink: 0;
 }
 
 .analytics-header h1 {
-  font-size: 34px;
-  font-weight: 900;
-  color: #312e81;
-  margin: 0 0 4px;
-  letter-spacing: -1px;
+  font-size: 32px;
+  margin: 0 0 var(--space-1);
 }
 
 .analytics-header p {
   margin: 0;
-  color: #64748b;
+  color: var(--muted);
   font-size: 15px;
 }
 
@@ -34,52 +33,56 @@
 .stat-row {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-bottom: 28px;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
 }
 
 .stat-card {
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid #e2e8f0;
-  border-radius: 20px;
-  padding: 22px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--gold-600);
+  border-radius: var(--radius);
+  padding: var(--space-5) var(--space-5) var(--space-4);
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  gap: var(--space-1);
+  box-shadow: var(--shadow-sm);
 }
 
 .stat-value {
-  font-size: 34px;
-  font-weight: 900;
-  color: #4f46e5;
-  line-height: 1;
+  font-family: var(--serif);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--navy-900);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
 }
 
 .stat-label {
   font-size: 14px;
-  font-weight: 700;
-  color: #334155;
+  font-weight: 600;
+  color: var(--text);
 }
 
 .stat-sub {
   font-size: 12px;
-  color: #94a3b8;
+  color: var(--muted);
 }
 
 /* ── Chart grid ── */
 .charts-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 22px;
+  gap: var(--space-5);
 }
 
 .chart-card {
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid #e2e8f0;
-  border-radius: 24px;
-  padding: 26px 24px 20px;
-  box-shadow: 0 12px 36px rgba(15, 23, 42, 0.07);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-5) var(--space-4);
+  box-shadow: var(--shadow-sm);
+  min-width: 0;
 }
 
 .chart-card.span-2 {
@@ -87,19 +90,20 @@
 }
 
 .chart-header {
-  margin-bottom: 20px;
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--border);
 }
 
-.chart-header h2 {
+.chart-header h2,
+.chart-header h3 {
   font-size: 18px;
-  font-weight: 800;
-  color: #312e81;
-  margin: 0 0 4px;
+  margin: 0 0 var(--space-1);
 }
 
 .chart-header p {
   font-size: 13px;
-  color: #64748b;
+  color: var(--muted);
   margin: 0;
 }
 
@@ -109,7 +113,7 @@
   flex-wrap: wrap;
   gap: 10px 20px;
   justify-content: center;
-  margin-top: 14px;
+  margin-top: var(--space-3);
 }
 
 .legend-item {
@@ -117,20 +121,21 @@
   align-items: center;
   gap: 6px;
   font-size: 13px;
-  color: #475569;
-  font-weight: 600;
+  color: var(--muted);
+  font-weight: 500;
 }
 
 .legend-dot {
   width: 10px;
   height: 10px;
-  border-radius: 50%;
+  border-radius: 2px;
   flex-shrink: 0;
 }
 
 .legend-item strong {
-  color: #0f172a;
-  font-weight: 800;
+  color: var(--ink);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
 
 /* ── Loading / error states ── */
@@ -139,22 +144,23 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: var(--space-4);
   min-height: 40vh;
-  color: #64748b;
+  color: var(--muted);
   font-size: 16px;
+  text-align: center;
 }
 
 .analytics-state svg {
-  color: #4f46e5;
+  color: var(--gold-600);
 }
 
 .analytics-state.error svg {
-  color: #dc2626;
+  color: var(--danger);
 }
 
 .analytics-state.error {
-  color: #dc2626;
+  color: var(--danger);
 }
 
 /* ════════════════════════════════════════
@@ -162,29 +168,29 @@
    ════════════════════════════════════════ */
 
 .perf-section {
-  margin-top: 36px;
+  margin-top: var(--space-7);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: var(--space-5);
 }
 
 .perf-section-header {
-  margin-bottom: 4px;
+  margin-bottom: var(--space-1);
 }
 
 .perf-section-header h2 {
-  font-size: 22px;
-  font-weight: 800;
-  color: #312e81;
-  margin: 0 0 6px;
-  letter-spacing: -0.5px;
+  font-size: 24px;
+  margin: 0 0 var(--space-2);
 }
 
 .perf-section-header p {
-  font-size: 14px;
-  color: #64748b;
+  font-size: 15px;
+  color: var(--muted);
   margin: 0;
-  max-width: 700px;
+  max-width: 720px;
+  line-height: 1.6;
 }
 
 .perf-chart {
@@ -207,7 +213,7 @@
 
 .mini-bar-track {
   height: 4px;
-  background: #f1f5f9;
+  background: var(--navy-50);
   border-radius: 2px;
   margin-top: 5px;
   width: 64px;
@@ -224,7 +230,7 @@
 .table-scroll {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  margin-bottom: 16px;
+  margin-bottom: var(--space-4);
 }
 
 .perf-table {
@@ -241,13 +247,14 @@
 
 .perf-table thead tr:last-child th {
   padding-top: 4px;
+  border-bottom: 2px solid var(--navy-900);
 }
 
 .th-mode {
   text-align: left;
   padding: 10px 16px 10px 0;
-  color: #334155;
-  font-weight: 700;
+  color: var(--ink);
+  font-weight: 600;
   font-size: 13px;
   white-space: nowrap;
   vertical-align: bottom;
@@ -255,8 +262,8 @@
 
 .th-center {
   text-align: center;
-  color: #334155;
-  font-weight: 700;
+  color: var(--ink);
+  font-weight: 600;
   font-size: 13px;
 }
 
@@ -266,44 +273,49 @@
 
 .th-group {
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 700;
   padding: 8px 14px;
-  border-radius: 6px 6px 0 0;
-  letter-spacing: 0.2px;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .th-kw {
-  background: #f1f5f9;
-  color: #475569;
+  background: var(--navy-50);
+  color: var(--muted);
 }
 
 .th-sem {
-  background: #eef2ff;
-  color: #4338ca;
+  background: var(--navy-900);
+  color: #fff;
 }
 
 .th-metric {
   font-size: 11px;
   font-weight: 700;
-  color: #64748b;
-  letter-spacing: 0.5px;
+  color: var(--muted);
+  letter-spacing: 0.06em;
   padding: 6px 10px;
 }
 
 /* ── Table body ── */
 .perf-table tbody tr {
-  border-top: 1px solid #f1f5f9;
+  border-top: 1px solid var(--border);
   transition: background 0.12s ease;
 }
 
+.perf-table tbody tr:nth-child(even) {
+  background: var(--paper);
+}
+
 .perf-table tbody tr:hover {
-  background: #fafbff;
+  background: var(--gold-100);
 }
 
 .td-mode {
   padding: 10px 16px 10px 0;
-  font-weight: 700;
-  color: #1e293b;
+  font-weight: 600;
+  color: var(--ink);
   white-space: nowrap;
 }
 
@@ -314,8 +326,8 @@
 
 .td-sub {
   font-size: 13px;
-  color: #94a3b8;
-  font-weight: 600;
+  color: var(--muted);
+  font-weight: 500;
   padding: 10px 8px;
 }
 
@@ -323,7 +335,7 @@
 .td-delta {
   text-align: center;
   vertical-align: middle;
-  font-weight: 800;
+  font-weight: 700;
   font-size: 14px;
   padding: 10px 14px;
   font-variant-numeric: tabular-nums;
@@ -331,21 +343,22 @@
 }
 
 .td-delta.pos {
-  color: #059669;
+  color: var(--success);
 }
 
 .td-delta.neg {
-  color: #dc2626;
+  color: var(--danger);
 }
 
 /* ── Methodology note ── */
 .methodology-note {
-  font-size: 12px;
-  color: #94a3b8;
-  line-height: 1.55;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--muted);
+  line-height: 1.6;
   margin: 0;
-  padding: 12px 0 0;
-  border-top: 1px solid #f1f5f9;
+  padding: var(--space-3) 0 0;
+  border-top: 1px solid var(--border);
 }
 
 /* ── Responsive ── */
@@ -364,11 +377,28 @@
 }
 
 @media (max-width: 560px) {
+  .analytics {
+    padding: var(--space-5) var(--space-4) var(--space-7);
+  }
+
   .stat-row {
     grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+  }
+
+  .stat-card {
+    padding: var(--space-4);
+  }
+
+  .stat-value {
+    font-size: 26px;
   }
 
   .analytics-header h1 {
-    font-size: 26px;
+    font-size: 24px;
+  }
+
+  .chart-card {
+    padding: var(--space-4) var(--space-3) var(--space-3);
   }
 }

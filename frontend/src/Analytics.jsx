@@ -18,7 +18,7 @@ import {
 import { BarChart2, Loader2, AlertCircle } from "lucide-react";
 import "./Analytics.css";
 
-const PIE_COLORS = ["#4f46e5", "#7c3aed", "#0891b2", "#059669"];
+const PIE_COLORS = ["#1f2f52", "#7a2e3a", "#b8862b", "#2f6b4f"];
 
 function StatCard({ label, value, sub }) {
   return (
@@ -33,7 +33,7 @@ function StatCard({ label, value, sub }) {
 // Renders a single P / R / F1 cell: coloured number + mini progress bar
 function MetricCell({ v, bold }) {
   const color =
-    v >= 0.6 ? "#059669" : v >= 0.35 ? "#d97706" : "#dc2626";
+    v >= 0.6 ? "#2f6b4f" : v >= 0.35 ? "#93651a" : "#a23b32";
   return (
     <td className="metric-cell">
       <span className="metric-val" style={{ color, fontWeight: bold ? 800 : 600 }}>
@@ -148,30 +148,30 @@ function Analytics() {
               data={data.top_searches}
               margin={{ top: 8, right: 16, left: 0, bottom: 64 }}
             >
-              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#e4ddcf" vertical={false} />
               <XAxis
                 dataKey="topic"
                 angle={-32}
                 textAnchor="end"
-                tick={{ fontSize: 12, fill: "#475569" }}
+                tick={{ fontSize: 12, fill: "#5f6470" }}
                 interval={0}
               />
               <YAxis
-                tick={{ fontSize: 12, fill: "#475569" }}
+                tick={{ fontSize: 12, fill: "#5f6470" }}
                 axisLine={false}
                 tickLine={false}
               />
               <Tooltip
                 contentStyle={{
                   borderRadius: 12,
-                  border: "1px solid #e2e8f0",
+                  border: "1px solid #e4ddcf",
                   fontSize: 13,
-                  boxShadow: "0 8px 24px rgba(15,23,42,0.10)",
+                  boxShadow: "0 8px 24px rgba(20,33,61,0.10)",
                 }}
-                cursor={{ fill: "#eef2ff" }}
+                cursor={{ fill: "#f2f4f8" }}
                 formatter={(v) => [v, "Searches"]}
               />
-              <Bar dataKey="count" fill="#4f46e5" radius={[6, 6, 0, 0]} name="Searches" />
+              <Bar dataKey="count" fill="#1f2f52" radius={[6, 6, 0, 0]} name="Searches" />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -201,9 +201,9 @@ function Analytics() {
               <Tooltip
                 contentStyle={{
                   borderRadius: 12,
-                  border: "1px solid #e2e8f0",
+                  border: "1px solid #e4ddcf",
                   fontSize: 13,
-                  boxShadow: "0 8px 24px rgba(15,23,42,0.10)",
+                  boxShadow: "0 8px 24px rgba(20,33,61,0.10)",
                 }}
                 formatter={(v, name) => [v, name]}
               />
@@ -237,12 +237,12 @@ function Analytics() {
             >
               <CartesianGrid
                 strokeDasharray="3 3"
-                stroke="#e2e8f0"
+                stroke="#e4ddcf"
                 horizontal={false}
               />
               <XAxis
                 type="number"
-                tick={{ fontSize: 12, fill: "#475569" }}
+                tick={{ fontSize: 12, fill: "#5f6470" }}
                 axisLine={false}
                 tickLine={false}
               />
@@ -250,16 +250,16 @@ function Analytics() {
                 type="category"
                 dataKey="short_title"
                 width={118}
-                tick={{ fontSize: 11, fill: "#475569" }}
+                tick={{ fontSize: 11, fill: "#5f6470" }}
                 axisLine={false}
                 tickLine={false}
               />
               <Tooltip
                 contentStyle={{
                   borderRadius: 12,
-                  border: "1px solid #e2e8f0",
+                  border: "1px solid #e4ddcf",
                   fontSize: 13,
-                  boxShadow: "0 8px 24px rgba(15,23,42,0.10)",
+                  boxShadow: "0 8px 24px rgba(20,33,61,0.10)",
                 }}
                 formatter={(v) => [v, "Recommendations"]}
                 labelFormatter={(_, payload) =>
@@ -268,7 +268,7 @@ function Analytics() {
               />
               <Bar
                 dataKey="count"
-                fill="#7c3aed"
+                fill="#7a2e3a"
                 radius={[0, 6, 6, 0]}
                 name="Recommendations"
               />
@@ -289,32 +289,32 @@ function Analytics() {
             >
               <defs>
                 <linearGradient id="gradSearch" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.18} />
-                  <stop offset="95%" stopColor="#4f46e5" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#1f2f52" stopOpacity={0.18} />
+                  <stop offset="95%" stopColor="#1f2f52" stopOpacity={0} />
                 </linearGradient>
                 <linearGradient id="gradBorrow" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#7c3aed" stopOpacity={0.18} />
-                  <stop offset="95%" stopColor="#7c3aed" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#7a2e3a" stopOpacity={0.18} />
+                  <stop offset="95%" stopColor="#7a2e3a" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#e4ddcf" vertical={false} />
               <XAxis
                 dataKey="month"
-                tick={{ fontSize: 13, fill: "#475569" }}
+                tick={{ fontSize: 13, fill: "#5f6470" }}
                 axisLine={false}
                 tickLine={false}
               />
               <YAxis
-                tick={{ fontSize: 12, fill: "#475569" }}
+                tick={{ fontSize: 12, fill: "#5f6470" }}
                 axisLine={false}
                 tickLine={false}
               />
               <Tooltip
                 contentStyle={{
                   borderRadius: 12,
-                  border: "1px solid #e2e8f0",
+                  border: "1px solid #e4ddcf",
                   fontSize: 13,
-                  boxShadow: "0 8px 24px rgba(15,23,42,0.10)",
+                  boxShadow: "0 8px 24px rgba(20,33,61,0.10)",
                 }}
               />
               <Legend
@@ -325,21 +325,21 @@ function Analytics() {
               <Area
                 type="monotone"
                 dataKey="searches"
-                stroke="#4f46e5"
+                stroke="#1f2f52"
                 strokeWidth={2.5}
                 fill="url(#gradSearch)"
                 name="Searches"
-                dot={{ r: 4, fill: "#4f46e5", strokeWidth: 0 }}
+                dot={{ r: 4, fill: "#1f2f52", strokeWidth: 0 }}
                 activeDot={{ r: 6 }}
               />
               <Area
                 type="monotone"
                 dataKey="borrows"
-                stroke="#7c3aed"
+                stroke="#7a2e3a"
                 strokeWidth={2.5}
                 fill="url(#gradBorrow)"
                 name="Borrows"
-                dot={{ r: 4, fill: "#7c3aed", strokeWidth: 0 }}
+                dot={{ r: 4, fill: "#7a2e3a", strokeWidth: 0 }}
                 activeDot={{ r: 6 }}
               />
             </AreaChart>
@@ -375,7 +375,7 @@ function Analytics() {
             <div className="chart-card perf-chart">
               <div className="chart-header">
                 <h3>F1 Score by Mode</h3>
-                <p>Higher is better — semantic (indigo) vs keyword baseline (slate)</p>
+                <p>Higher is better — semantic (navy) vs keyword baseline (grey)</p>
               </div>
               <ResponsiveContainer width="100%" height={210}>
                 <BarChart
@@ -383,16 +383,16 @@ function Analytics() {
                   margin={{ top: 8, right: 16, left: 0, bottom: 4 }}
                   barCategoryGap="32%"
                 >
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e4ddcf" vertical={false} />
                   <XAxis
                     dataKey="mode"
-                    tick={{ fontSize: 13, fill: "#475569" }}
+                    tick={{ fontSize: 13, fill: "#5f6470" }}
                     axisLine={false}
                     tickLine={false}
                   />
                   <YAxis
                     domain={[0, 1]}
-                    tick={{ fontSize: 12, fill: "#475569" }}
+                    tick={{ fontSize: 12, fill: "#5f6470" }}
                     axisLine={false}
                     tickLine={false}
                     tickFormatter={(v) => v.toFixed(1)}
@@ -400,9 +400,9 @@ function Analytics() {
                   <Tooltip
                     contentStyle={{
                       borderRadius: 12,
-                      border: "1px solid #e2e8f0",
+                      border: "1px solid #e4ddcf",
                       fontSize: 13,
-                      boxShadow: "0 8px 24px rgba(15,23,42,0.10)",
+                      boxShadow: "0 8px 24px rgba(20,33,61,0.10)",
                     }}
                     formatter={(v, name) => [v.toFixed(3), name]}
                   />
@@ -411,8 +411,8 @@ function Analytics() {
                     iconType="circle"
                     iconSize={10}
                   />
-                  <Bar dataKey="Keyword" fill="#94a3b8" radius={[5, 5, 0, 0]} />
-                  <Bar dataKey="Semantic" fill="#4f46e5" radius={[5, 5, 0, 0]} />
+                  <Bar dataKey="Keyword" fill="#b3ad9f" radius={[5, 5, 0, 0]} />
+                  <Bar dataKey="Semantic" fill="#1f2f52" radius={[5, 5, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
