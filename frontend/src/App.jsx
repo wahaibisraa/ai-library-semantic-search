@@ -2,7 +2,6 @@ import { useState } from "react";
 import axios from "axios";
 import {
   Search,
-  BookOpen,
   Sparkles,
   GraduationCap,
   Compass,
@@ -27,6 +26,8 @@ import {
 } from "lucide-react";
 import "./App.css";
 import Analytics from "./Analytics.jsx";
+import nextlibLogoTransparent from "./assets/nextlib-logo-transparent.png";
+import researchPaperFirstPage from "./assets/research-paper-first-page.png";
 
 // Display-only: picks a category icon by matching keywords in the subject string.
 // It does not affect search, ranking, or any data sent to the backend.
@@ -74,7 +75,49 @@ const MODE_OPTIONS = [
   { key: "research", label: "Research", icon: Compass },
 ];
 
+const interviewRows = [
+  ["College of Shari'a Sciences", "Academic", "Manual", "Basic OPAC", "No system", "Barcode"],
+  ["Sultan Qaboos Grand Mosque", "Public", "Semi-automated", "Basic OPAC", "No system", "N/A"],
+  ["MCBS", "Academic", "Manual", "Basic OPAC", "No system", "Manual"],
+  ["National University, Bausher", "Academic", "Semi-automated", "Basic OPAC", "No system", "Barcode"],
+  ["College of Banking & Financial Studies", "Academic", "Semi-automated", "Basic OPAC", "No system", "RFID"],
+  ["Public Knowledge Library", "Public", "Semi-automated", "Basic OPAC", "Rule-based", "N/A"],
+  ["Majan University College", "Academic", "Manual", "Basic OPAC", "No system", "RFID"],
+  ["German University of Technology", "Academic", "Mixed", "OPAC / Discovery / AI", "Manual lists", "Manual / RFID"],
+  ["Sultan Qaboos University", "Academic", "Semi-automated", "Basic OPAC", "Manual lists", "RFID"],
+  ["Military Technological College", "Academic", "Fully automated", "Basic OPAC", "Manual lists", "Manual"],
+  ["UTAS, Muscat", "Academic", "Manual", "Basic OPAC", "No system", "Manual"],
+];
+
+const surveyCharts = {
+  frustrations: [
+    ["Hard to tell if a book covers the topic", 302, "45.3%"],
+    ["Exact titles / keywords feel outdated", 276, "41.4%"],
+    ["Resources are outdated or unavailable", 197, "29.6%"],
+    ["Finding the physical book takes too long", 194, "29.1%"],
+  ],
+  discovery: [
+    ["AI assistants", 392, "58.9%"],
+    ["Standard search engines", 303, "45.5%"],
+    ["University library portal", 159, "23.9%"],
+    ["Professor or peer", 112, "16.8%"],
+  ],
+  behavior: [
+    ["Yes, occasionally", 263, "39.5%"],
+    ["Yes, frequently", 205, "30.8%"],
+    ["No, eventually find it", 109, "16.4%"],
+    ["Rarely use library search", 89, "13.4%"],
+  ],
+  intent: [
+    ["Use the library significantly more", 238, "35.7%"],
+    ["Save hours per semester", 193, "29.0%"],
+    ["Discover beyond my major", 159, "23.9%"],
+    ["No change", 76, "11.4%"],
+  ],
+};
+
 function App() {
+  const demoMode = new URLSearchParams(window.location.search).get("demo") === "1";
   const [page, setPage] = useState("home");
   const [query, setQuery] = useState("");
   const [mode, setMode] = useState("");
@@ -198,43 +241,100 @@ function App() {
 
   const resultCount = countResults(results);
 
+  const renderNavbar = () => (
+    <nav className="navbar">
+      <div className="brand">
+        <img className="brand-logo-small" src={nextlibLogoTransparent} alt="" />
+        <span>Smart AI Library</span>
+      </div>
+
+      <div className="nav-tabs" role="tablist" aria-label="Main sections">
+        <button
+          className={`nav-tab${page === "home" ? " active" : ""}`}
+          onClick={() => setPage("home")}
+          role="tab"
+          aria-selected={page === "home"}
+        >
+          <Search size={15} />
+          Search
+        </button>
+        <button
+          className={`nav-tab${page === "analytics" ? " active" : ""}`}
+          onClick={() => setPage("analytics")}
+          role="tab"
+          aria-selected={page === "analytics"}
+        >
+          <BarChart2 size={15} />
+          Analytics
+        </button>
+      </div>
+    </nav>
+  );
+
   return (
-    <div className="app">
-      <nav className="navbar">
-        <div className="brand">
-          <span className="brand-mark" aria-hidden="true">
-            <BookOpen />
-          </span>
-          <span>Smart AI Library</span>
-        </div>
-
-        <div className="nav-tabs" role="tablist" aria-label="Main sections">
-          <button
-            className={`nav-tab${page === "home" ? " active" : ""}`}
-            onClick={() => setPage("home")}
-            role="tab"
-            aria-selected={page === "home"}
-          >
-            <Search size={15} />
-            Search
-          </button>
-          <button
-            className={`nav-tab${page === "analytics" ? " active" : ""}`}
-            onClick={() => setPage("analytics")}
-            role="tab"
-            aria-selected={page === "analytics"}
-          >
-            <BarChart2 size={15} />
-            Analytics
-          </button>
-        </div>
-      </nav>
-
+    <div className={`app ${demoMode ? "demo-mode" : "presentation-mode"}`}>
       {page === "analytics" ? (
-        <Analytics />
+        <>
+          {renderNavbar()}
+          <Analytics />
+        </>
       ) : (
         <>
+        <main className="story">
+        <section className="story-hero">
+          <div className="story-hero-copy">
+            <span className="eyebrow">A research-led library experience</span>
+            <h1>Students are searching everywhere except the library.</h1>
+            <p className="story-lede">NEXTLIB turns natural questions into relevant academic books, helping students move from scattered searching to confident discovery.</p>
+          </div>
+          <div className="story-hero-mark"><img src={nextlibLogoTransparent} alt="NEXTLIB logo" /></div>
+        </section>
+
+        <section className="problem-section" id="problem">
+          <div className="section-heading compact-heading"><span className="eyebrow">The problem</span><h2>Library search has not caught up with student behavior.</h2><p>Interviews across Omani libraries and a 666-response student survey point to the same gap: students need more context, better discovery, and less friction.</p></div>
+          <div className="problem-points">
+            <div><strong>01</strong><h3>Keyword systems are too rigid</h3><p>Most interviewed libraries still rely on basic OPAC keyword search.</p></div>
+            <div><strong>02</strong><h3>Discovery is happening elsewhere</h3><p>Students increasingly turn to AI assistants and general search engines first.</p></div>
+            <div><strong>03</strong><h3>Facilities do not support discovery</h3><p>Without digital guidance, the library becomes a place to sit rather than a place to find.</p></div>
+          </div>
+        </section>
+
+        <section className="evidence-section" id="evidence">
+          <div className="section-heading"><span className="eyebrow">Field interviews</span><h2>11 libraries. One clear pattern.</h2><p>The interviews show a landscape that is partly digital, but still dominated by manual work, basic OPAC search, and limited recommendation support.</p></div>
+          <div className="interview-table-wrap">
+            <table className="interview-table"><thead><tr><th>Library</th><th>Type</th><th>Cataloging</th><th>Search</th><th>Recommendations</th><th>Handling</th></tr></thead><tbody>{interviewRows.map((row) => <tr key={row[0]}>{row.map((cell, i) => <td key={`${row[0]}-${i}`}>{cell}</td>)}</tr>)}</tbody></table>
+          </div>
+          <p className="table-note">Summary of the interview matrix. The full findings cover cataloging, retrieval, assistance, recommendations, collection development, handling, analytics, and preservation.</p>
+        </section>
+
+        <section className="survey-section" id="survey">
+          <div className="section-heading"><span className="eyebrow">Student survey</span><h2>The evidence is not subtle.</h2><p>Across 666 responses, students describe a search experience that is hard to trust and easy to abandon.</p></div>
+          <div className="stat-strip"><div><strong>666</strong><span>responses</span></div><div><strong>70.3%</strong><span>abandoned a search at least occasionally</span></div><div><strong>88.6%</strong><span>would benefit from conversational discovery</span></div></div>
+          <div className="chart-grid">
+            <SurveyChart title="What gets in the way?" note="Select all that apply" data={surveyCharts.frustrations} max={302} />
+            <SurveyChart title="Where do students search first?" note="Select all that apply" data={surveyCharts.discovery} max={392} />
+            <SurveyChart title="Have students abandoned a search?" data={surveyCharts.behavior} max={263} />
+            <SurveyChart title="What would conversational search change?" data={surveyCharts.intent} max={238} />
+          </div>
+        </section>
+
+        <section className="research-section" id="research">
+          <div className="research-copy"><span className="eyebrow">Research to prototype</span><h2>Built as research. Presented as a working system.</h2><p>We developed the idea as a research paper on NLP-based resource discovery for academic libraries. The work was accepted for conference presentation and is planned for publication in IEEE and indexing in Scopus.</p><div className="research-meta"><span>Conference paper</span><span>NLP + semantic search</span><span>Academic library discovery</span></div></div>
+          <div className="paper-frame"><img src={researchPaperFirstPage} alt="First page of the NEXTLIB research paper" /></div>
+          <div className="presentation-placeholder"><div className="placeholder-icon">+</div><strong>Presentation evidence</strong><span>Add the presentation photo here</span></div>
+        </section>
+
+        <section className="demo-slide">
+          <span className="eyebrow">The working solution</span>
+          <h2>Ready to see NEXTLIB in action?</h2>
+          <p>Open the live demo and try a natural-language search across the academic catalogue.</p>
+          <a className="demo-slide-link" href="?demo=1" target="_blank" rel="noreferrer">TEST THE DEMO <span>↗</span></a>
+        </section>
+        </main>
         <section className="hero">
+        {renderNavbar()}
+        <div id="product" className="product-anchor" aria-hidden="true" />
+        <div className="product-kicker"><img src={nextlibLogoTransparent} alt="" /> <span>Now try the solution</span></div>
         <div className="hero-badge">
           <Sparkles size={18} />
           AI-Powered Academic Assistant
@@ -404,6 +504,12 @@ function App() {
         </>
       )}
     </div>
+  );
+}
+
+function SurveyChart({ title, note, data, max }) {
+  return (
+    <div className="survey-chart"><div className="chart-title"><h3>{title}</h3>{note && <span>{note}</span>}</div><div className="bars">{data.map(([label, value, percent]) => <div className="bar-row" key={label}><div className="bar-label"><span>{label}</span><b>{percent}</b></div><div className="bar-track"><span style={{ width: `${(value / max) * 100}%` }} /></div><small>{value} responses</small></div>)}</div></div>
   );
 }
 
