@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -7,11 +7,36 @@
     <meta name="theme-color" content="#14213d" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- English: Libre Baskerville (headings) + Inter (body).
+         Arabic (applied only when lang="ar"): Noto Kufi Arabic (headings) + IBM Plex Sans Arabic (body).
+         Google Fonts serves these by unicode-range, so Arabic files only load when Arabic text is shown. -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Noto+Kufi+Arabic:wght@500;600&display=swap"
       rel="stylesheet"
     />
-    <title>NEXTLIB — Semantic Library Search</title>
+    <title>NEXTLIB · Semantic library search</title>
+    <script>
+      // Apply the saved theme and language before first paint (avoids a flash of the wrong theme/direction).
+      // Keys must match src/theme/ThemeProvider.jsx and src/i18n/I18nProvider.jsx.
+      (function () {
+        var root = document.documentElement;
+        var theme = null;
+        var lang = null;
+        try {
+          theme = localStorage.getItem("nextlib-theme");
+          lang = localStorage.getItem("nextlib-lang");
+        } catch (e) {
+          /* storage unavailable: fall back to defaults */
+        }
+        if (theme !== "light" && theme !== "dark") {
+          theme = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        }
+        if (lang !== "ar") lang = "en";
+        root.setAttribute("data-theme", theme);
+        root.setAttribute("lang", lang);
+        root.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

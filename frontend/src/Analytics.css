@@ -40,7 +40,7 @@
 .stat-card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-left: 3px solid var(--gold-600);
+  border-inline-start: 3px solid var(--gold-600);
   border-radius: var(--radius);
   padding: var(--space-5) var(--space-5) var(--space-4);
   display: flex;
@@ -53,7 +53,7 @@
   font-family: var(--serif);
   font-size: 32px;
   font-weight: 700;
-  color: var(--navy-900);
+  color: var(--heading);
   line-height: 1.1;
   font-variant-numeric: tabular-nums;
 }
@@ -194,7 +194,7 @@
 }
 
 .perf-chart {
-  /* same as .chart-card — just a semantic alias */
+  /* same as .chart-card: just a semantic alias */
 }
 
 /* ── Metric cell ── */
@@ -247,12 +247,13 @@
 
 .perf-table thead tr:last-child th {
   padding-top: 4px;
-  border-bottom: 2px solid var(--navy-900);
+  border-bottom: 2px solid var(--heading);
 }
 
 .th-mode {
-  text-align: left;
-  padding: 10px 16px 10px 0;
+  text-align: start;
+  padding-block: 10px;
+  padding-inline: 0 16px;
   color: var(--ink);
   font-weight: 600;
   font-size: 13px;
@@ -272,12 +273,10 @@
 }
 
 .th-group {
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 600;
   padding: 8px 14px;
   border-radius: var(--radius-sm) var(--radius-sm) 0 0;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
 }
 
 .th-kw {
@@ -286,15 +285,14 @@
 }
 
 .th-sem {
-  background: var(--navy-900);
-  color: #fff;
+  background: var(--primary);
+  color: var(--on-primary);
 }
 
 .th-metric {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--muted);
-  letter-spacing: 0.06em;
   padding: 6px 10px;
 }
 
@@ -313,7 +311,8 @@
 }
 
 .td-mode {
-  padding: 10px 16px 10px 0;
+  padding-block: 10px;
+  padding-inline: 0 16px;
   font-weight: 600;
   color: var(--ink);
   white-space: nowrap;
@@ -401,4 +400,17 @@
   .chart-card {
     padding: var(--space-4) var(--space-3) var(--space-3);
   }
+}
+
+.methodology-label {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* SVG text inherits direction: rtl in Arabic, which swaps the meaning of Recharts'
+   text-anchor start/end and pushes tick labels into the bars. Axis placement is
+   already mirrored in Analytics.jsx, so chart text keeps physical (LTR) anchoring. */
+.analytics .recharts-wrapper svg text {
+  direction: ltr;
 }

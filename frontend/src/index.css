@@ -1,8 +1,11 @@
 /* ════════════════════════════════════════
-   Design tokens — "University Library" theme
+   Design tokens: "University Library" theme
+   Palette tokens name a colour; semantic tokens name a job.
+   Components use semantic tokens, so dark mode only has to
+   redefine tokens under [data-theme="dark"].
    ════════════════════════════════════════ */
 :root {
-  /* Brand */
+  /* Brand palette (fixed: also used on always-dark/always-light surfaces such as the logo pill) */
   --navy-900: #14213d;
   --navy-800: #1f2f52;
   --navy-700: #2c3e66;
@@ -13,6 +16,8 @@
   --gold-600: #b8862b; /* decorative accent: rules, icons, focus ring */
   --gold-700: #8a6417; /* gold used as text (AA on ivory) */
   --gold-100: #f6edd9;
+  --gold-border: #ead7ac;
+  --gold-bright: #e4b54e; /* gold on dark bands */
 
   /* Neutrals */
   --ivory: #faf7f0;
@@ -23,7 +28,25 @@
   --ink: #1d2433;
   --text: #3a3f4b;
   --muted: #5f6470;
-  --subtle: #8a8f99;
+  --subtle: #6b6f78; /* was #8a8f99 (3.2:1); darkened to pass AA for small text */
+
+  /* Semantic roles */
+  --heading: var(--navy-900);
+  --ink-accent: var(--navy-800); /* text on secondary buttons, chips, badges */
+  --link: var(--navy-700);
+  --primary: var(--navy-900);
+  --primary-hover: var(--navy-700);
+  --on-primary: #ffffff;
+  --nav-bg: var(--navy-900);
+  --band: var(--navy-900); /* full-width dark sections in the Research Experience */
+  --band-deep: #0e1b33;
+  --on-band: #ffffff;
+  --on-band-muted: rgba(255, 255, 255, 0.72);
+  --on-band-subtle: rgba(255, 255, 255, 0.6);
+  --band-border: rgba(255, 255, 255, 0.18);
+  --hover-tint: var(--navy-50);
+  --skeleton-hi: #e9e4d8;
+  --plate-c: #fbf8f1; /* flat logo plaque on the Research Experience hero */
 
   /* Status */
   --success: #2f6b4f;
@@ -32,8 +55,19 @@
   --warning-bg: #f8eed9;
   --danger: #a23b32;
   --danger-bg: #f7e4e1;
+  --danger-border: rgba(162, 59, 50, 0.3);
 
-  /* Type */
+  /* Charts (read by src/theme/useChartColors.js) */
+  --chart-1: #1f2f52;
+  --chart-2: #7a2e3a;
+  --chart-3: #b8862b;
+  --chart-4: #2f6b4f;
+  --chart-baseline: #a39d8f;
+  --chart-grid: #e4ddcf;
+  --chart-axis: #5f6470;
+  --chart-cursor: #f2f4f8;
+
+  /* Type (English). Arabic faces are added only under :root[lang="ar"] below. */
   --serif: "Libre Baskerville", Georgia, "Times New Roman", serif;
   --sans: "Inter", system-ui, "Segoe UI", Roboto, Arial, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
@@ -71,6 +105,163 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ── Dark theme: deep navy-charcoal, warm off-white text, muted gold ── */
+:root[data-theme="dark"] {
+  --navy-100: #252f45;
+  --navy-50: #1d2536;
+  --burgundy-700: #d9939d;
+  --burgundy-100: #3a1f26;
+  --gold-600: #c9a45a;
+  --gold-700: #d8b56e;
+  --gold-100: #2e2716;
+  --gold-border: #4a3d20;
+  --gold-bright: #d9b45f;
+
+  --ivory: #0f1420;
+  --paper: #141a27;
+  --surface: #19202f;
+  --border: #2b3446;
+  --border-strong: #3d4860;
+  --ink: #f2ede3;
+  --text: #ddd6c8;
+  --muted: #b3ac9c;
+  --subtle: #968f80;
+
+  --heading: #f3eee4;
+  --ink-accent: #d4dcf0;
+  --link: #a9b9de;
+  --primary: #3a5089;
+  --primary-hover: #4a62a0;
+  --on-primary: #ffffff;
+  --nav-bg: #0a0e17;
+  --band: #0b111d;
+  --band-deep: #070b13;
+  --on-band-muted: rgba(255, 255, 255, 0.74);
+  --on-band-subtle: rgba(255, 255, 255, 0.6);
+  --band-border: rgba(255, 255, 255, 0.12);
+  --hover-tint: #222b3e;
+  --skeleton-hi: #2a3348;
+  /* The logo artwork is black-on-light, so its plaque stays warm paper (slightly dimmed) */
+  --plate-c: #e8e1d3;
+
+  --success: #86c9a5;
+  --success-bg: #17302a;
+  --warning: #e0b665;
+  --warning-bg: #33290f;
+  --danger: #f0a197;
+  --danger-bg: #3a1e1c;
+  --danger-border: rgba(240, 161, 151, 0.35);
+
+  --chart-1: #8fa6d9;
+  --chart-2: #d48b97;
+  --chart-3: #d9b45f;
+  --chart-4: #7fbf9c;
+  --chart-baseline: #6f6b62;
+  --chart-grid: #2b3446;
+  --chart-axis: #b3ac9c;
+  --chart-cursor: rgba(255, 255, 255, 0.05);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 6px 18px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 2px 6px rgba(0, 0, 0, 0.3), 0 16px 40px rgba(0, 0, 0, 0.35);
+  --focus-ring: 0 0 0 3px rgba(217, 180, 95, 0.5);
+
+  color-scheme: dark;
+}
+
+/* ════════════════════════════════════════
+   Arabic typography (only when lang="ar")
+   Headings: Noto Kufi Arabic (500/600). Body and UI: IBM Plex Sans Arabic.
+   The Latin faces stay first in each stack: they contain no Arabic glyphs, so Arabic
+   text falls through to the Arabic face while English book titles and numbers keep
+   Libre Baskerville / Inter.
+   ════════════════════════════════════════ */
+:root[lang="ar"] {
+  --serif: "Libre Baskerville", "Noto Kufi Arabic", "Times New Roman", serif;
+  --sans: "Inter", "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+/* Letter-spacing breaks the joins of cursive script; Arabic has no italic or capitals */
+:root[lang="ar"] *,
+:root[lang="ar"] *::before,
+:root[lang="ar"] *::after {
+  letter-spacing: normal !important;
+  font-style: normal !important;
+  text-transform: none !important;
+}
+
+:root[lang="ar"] :is(h1, h2, h3) {
+  font-weight: 600;
+  line-height: 1.55;
+  text-wrap: balance; /* even line lengths when a heading wraps */
+}
+
+:root[lang="ar"] h3 {
+  font-weight: 500;
+}
+
+/* Kufi is wider than Naskh, so the large display headings are set a little smaller
+   and with more leading than the English ones */
+:root[lang="ar"] .hero h1 {
+  font-size: clamp(28px, 3.9vw, 44px);
+  line-height: 1.5;
+}
+
+:root[lang="ar"] .story-hero h1 {
+  font-size: clamp(34px, 4.6vw, 60px);
+  line-height: 1.45;
+}
+
+:root[lang="ar"] :is(.section-heading h2, .research-copy h2) {
+  font-size: clamp(26px, 3.3vw, 44px);
+  line-height: 1.45;
+}
+
+@media (max-width: 680px) {
+  :root[lang="ar"] .story-hero h1 {
+    font-size: 34px;
+  }
+}
+
+/* Reading sizes: body text never below 16px, captions 14px, compact badges 13px.
+   (Paragraphs that are already 18 to 20px keep their size.) */
+:root[lang="ar"] :is(
+  .feature-card p, .description, .meta, .state-banner p, .empty-state p, .problem-points p,
+  .perf-section-header p, .analytics-header p, .results-status
+) {
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+/* The Research Experience shrinks its text on short screens; keep Arabic readable there */
+@media (max-height: 760px) {
+  :root[lang="ar"] :is(.section-heading p, .research-copy p, .story-lede, .problem-points p) {
+    font-size: 16px;
+    line-height: 1.7;
+  }
+}
+
+:root[lang="ar"] :is(
+  .control-hint, .control-label, .chart-header p, .chart-title span, .stat-label, .stat-sub,
+  .table-note, .methodology-note, .bar-label, .legend-item, .nav-tab, .nav-control, .eyebrow,
+  .hero-badge, .td-mode, .th-mode, .th-center, .interview-table, .presentation-placeholder span
+) {
+  font-size: 14px;
+}
+
+:root[lang="ar"] :is(
+  .rank, .category-badge, .score, .mode-badge, .subject-tag, .research-meta span,
+  .bar-row small, .th-metric, .th-group, .brand-sub
+) {
+  font-size: 13px;
+}
+
+:root[lang="ar"] q {
+  quotes: "«" "»";
+}
+
 body {
   margin: 0;
   min-height: 100vh;
@@ -85,7 +276,7 @@ h2,
 h3 {
   font-family: var(--serif);
   font-weight: 700;
-  color: var(--navy-900);
+  color: var(--heading);
   line-height: 1.25;
   letter-spacing: -0.01em;
 }
@@ -99,7 +290,7 @@ input {
   font: inherit;
 }
 
-/* Keyboard focus — visible on every interactive element */
+/* Keyboard focus: visible on every interactive element */
 :focus-visible {
   outline: 2px solid var(--gold-600);
   outline-offset: 2px;
@@ -107,7 +298,25 @@ input {
 
 ::selection {
   background: var(--gold-100);
-  color: var(--navy-900);
+  color: var(--heading);
+}
+
+.skip-link {
+  position: absolute;
+  inset-inline-start: var(--space-4);
+  top: -48px;
+  z-index: 100;
+  padding: var(--space-2) var(--space-4);
+  background: var(--surface);
+  color: var(--heading);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: var(--space-2);
 }
 
 @media (prefers-reduced-motion: reduce) {

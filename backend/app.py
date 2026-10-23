@@ -590,7 +590,7 @@ def evaluate():
         "k": _EVAL_K,
         "methodology": (
             "Ground truth: books whose subjects field contains the topic phrase "
-            "(exact regex on raw catalog subjects — no stemming). "
+            "(exact regex on raw catalog subjects, with no stemming). "
             "Keyword baseline: unstemmed token-overlap scoring on title + subjects. "
             "Semantic: TF-IDF cosine similarity with PorterStemmer and stop-word removal. "
             "All metrics are macro-averaged over test queries at K=10. "

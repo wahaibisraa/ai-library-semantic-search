@@ -1,0 +1,218 @@
+{
+  "meta": {
+    "title": "NEXTLIB · Semantic library search"
+  },
+  "nav": {
+    "brand": "Smart AI Library",
+    "sections": "Main sections",
+    "skip": "Skip to content",
+    "search": "Search",
+    "experience": "Research experience",
+    "experienceShort": "Experience",
+    "analytics": "Analytics",
+    "langSwitch": "العربية",
+    "langSwitchLang": "ar",
+    "langSwitchLabel": "Switch to Arabic",
+    "themeToDark": "Switch to dark mode",
+    "themeToLight": "Switch to light mode"
+  },
+  "search": {
+    "badge": "AI-powered academic assistant",
+    "title": "One search. Multiple academic supports.",
+    "lede": "Search books, get personalized recommendations, prepare for courses, and generate research roadmaps using one intelligent library assistant.",
+    "placeholder": "Search by topic, course, or student ID…",
+    "inputLabel": "Search the library catalogue",
+    "button": "Search",
+    "searching": "Searching",
+    "modeLabel": "Mode",
+    "tryLabel": "Try",
+    "tryHint": "",
+    "modeHintAuto": "Auto-detected from your query",
+    "modeHintFixed": "Mode fixed. Click it again to return to auto-detect.",
+    "modeForce": "Force {{mode}} mode",
+    "modeDisable": "Click to disable {{mode}} override"
+  },
+  "modes": {
+    "search": "Search",
+    "recommend": "Recommend",
+    "study": "Study",
+    "research": "Research"
+  },
+  "modeNames": {
+    "Semantic Search": "Semantic search",
+    "Recommendation Mode": "Recommendation mode",
+    "Study Mode": "Study mode",
+    "Research Mode": "Research mode"
+  },
+  "features": {
+    "semantic": { "title": "Semantic search", "body": "Find relevant books using natural language queries." },
+    "recommend": { "title": "Recommendations", "body": "Suggest books based on student profile and interests." },
+    "study": { "title": "Study mode", "body": "Recommend beginner-friendly and useful course resources." },
+    "research": { "title": "Research mode", "body": "Create a step-by-step reading roadmap for research topics." }
+  },
+  "results": {
+    "heading": "Results",
+    "count_one": "{{count}} title found",
+    "count_other": "{{count}} titles found",
+    "forQuery": "for"
+  },
+  "roadmapSteps": {
+    "Step 1: Fundamentals": "Step 1: Fundamentals",
+    "Step 2: Applications": "Step 2: Applications",
+    "Step 3: Advanced Topics": "Step 3: Advanced Topics"
+  },
+  "categories": {
+    "security": "Security",
+    "computing": "Computing",
+    "health": "Health",
+    "mathematics": "Mathematics",
+    "science": "Science",
+    "business": "Business",
+    "law": "Law",
+    "language": "Language",
+    "arts": "Arts",
+    "environment": "Environment",
+    "history": "History and society",
+    "general": "General"
+  },
+  "book": {
+    "author": "Author:",
+    "publisher": "Publisher:",
+    "untitled": "Untitled Book",
+    "unknown": "Unknown",
+    "noSubjects": "No subjects available",
+    "subjectsLabel": "Subjects",
+    "match": "{{value}} match",
+    "scoreTitle": "Relevance score for this query"
+  },
+  "states": {
+    "errorTitle": "Search failed",
+    "errorBody": "Could not reach the library server. Make sure the Flask backend is running on port 5000, then try again.",
+    "retry": "Try again",
+    "loading": "Searching the catalogue…",
+    "emptyTitle": "No matching titles",
+    "emptyBody": "Try a broader topic, check the spelling, or pick one of the example queries above."
+  },
+  "analytics": {
+    "loading": "Loading analytics…",
+    "error": "Failed to load analytics. Make sure Flask is running.",
+    "title": "Analytics dashboard",
+    "subtitle": "Library usage insights derived from student activity data",
+    "stats": {
+      "totalSearches": "Total searches",
+      "totalBorrows": "Total borrows",
+      "uniqueTopics": "Unique topics",
+      "modesDetected": "Modes detected",
+      "allStudents": "across all students",
+      "topResults": "in top results",
+      "queryPatterns": "query patterns"
+    },
+    "topSearches": { "title": "Top searched topics", "sub": "Most frequent search queries from all students", "series": "Searches" },
+    "modeDist": { "title": "Search mode distribution", "sub": "How students use each query mode" },
+    "topBooks": { "title": "Most recommended books", "sub": "Titles appearing most across student recommendations", "series": "Recommendations" },
+    "trends": { "title": "Student engagement trends", "sub": "Monthly searches and borrows across the academic period", "searches": "Searches", "borrows": "Borrows" },
+    "perf": {
+      "title": "Search performance: keyword vs semantic",
+      "intro": "Precision, Recall, F1, MAP, NDCG, and MRR at K = 10, evaluated on fixed test queries. Ground truth: books whose library subject tags match the query topic.",
+      "loading": "Computing evaluation metrics…",
+      "error": "Failed to load evaluation metrics.",
+      "f1Title": "F1 score by mode",
+      "f1Sub": "Higher is better. Semantic search is compared with the keyword baseline.",
+      "keyword": "Keyword",
+      "semantic": "Semantic",
+      "tableTitle": "Full metrics table",
+      "tableSub": "P · R · F1 · MAP · NDCG · MRR at K = {{k}} per mode. Colour key: green ≥ 0.6, amber ≥ 0.35, red < 0.35.",
+      "colMode": "Mode",
+      "colQueries": "Queries",
+      "groupKeyword": "Keyword search (baseline)",
+      "groupSemantic": "Semantic search",
+      "delta": "ΔF1",
+      "methodologyLabel": ""
+    },
+    "modes": { "Search": "Search", "Study": "Study", "Research": "Research", "Recommend": "Recommend" },
+    "months": {
+      "Jan": "Jan", "Feb": "Feb", "Mar": "Mar", "Apr": "Apr", "May": "May", "Jun": "Jun",
+      "Jul": "Jul", "Aug": "Aug", "Sep": "Sep", "Oct": "Oct", "Nov": "Nov", "Dec": "Dec"
+    }
+  },
+  "experience": {
+    "hero": {
+      "eyebrow": "A research-led library experience",
+      "title": "Students are searching everywhere except the library.",
+      "lede": "NEXTLIB turns natural questions into relevant academic books, helping students move from scattered searching to confident discovery.",
+      "logoAlt": "NEXTLIB logo"
+    },
+    "problem": {
+      "eyebrow": "The problem",
+      "title": "Library search has not caught up with student behavior.",
+      "body": "Interviews across Omani libraries and a 666-response student survey point to the same gap: students need more context, better discovery, and less friction.",
+      "points": [
+        { "title": "Keyword systems are too rigid", "body": "Most interviewed libraries still rely on basic OPAC keyword search." },
+        { "title": "Discovery is happening elsewhere", "body": "Students increasingly turn to AI assistants and general search engines first." },
+        { "title": "Facilities do not support discovery", "body": "Without digital guidance, the library becomes a place to sit rather than a place to find." }
+      ]
+    },
+    "evidence": {
+      "eyebrow": "Field interviews",
+      "title": "11 libraries. One clear pattern.",
+      "body": "The interviews show a landscape that is partly digital, but still dominated by manual work, basic OPAC search, and limited recommendation support.",
+      "columns": ["Library", "Type", "Cataloging", "Search", "Recommendations", "Handling"],
+      "rows": [
+        ["College of Shari'a Sciences", "Academic", "Manual", "Basic OPAC", "No system", "Barcode"],
+        ["Sultan Qaboos Grand Mosque", "Public", "Semi-automated", "Basic OPAC", "No system", "N/A"],
+        ["MCBS", "Academic", "Manual", "Basic OPAC", "No system", "Manual"],
+        ["National University, Bausher", "Academic", "Semi-automated", "Basic OPAC", "No system", "Barcode"],
+        ["College of Banking & Financial Studies", "Academic", "Semi-automated", "Basic OPAC", "No system", "RFID"],
+        ["Public Knowledge Library", "Public", "Semi-automated", "Basic OPAC", "Rule-based", "N/A"],
+        ["Majan University College", "Academic", "Manual", "Basic OPAC", "No system", "RFID"],
+        ["German University of Technology", "Academic", "Mixed", "OPAC / Discovery / AI", "Manual lists", "Manual / RFID"],
+        ["Sultan Qaboos University", "Academic", "Semi-automated", "Basic OPAC", "Manual lists", "RFID"],
+        ["Military Technological College", "Academic", "Fully automated", "Basic OPAC", "Manual lists", "Manual"],
+        ["UTAS, Muscat", "Academic", "Manual", "Basic OPAC", "No system", "Manual"]
+      ],
+      "note": "Summary of the interview matrix. The full findings cover cataloging, retrieval, assistance, recommendations, collection development, handling, analytics, and preservation."
+    },
+    "survey": {
+      "eyebrow": "Student survey",
+      "title": "The evidence is not subtle.",
+      "body": "Across 666 responses, students describe a search experience that is hard to trust and easy to abandon.",
+      "stats": ["responses", "abandoned a search at least occasionally", "would benefit from conversational discovery"],
+      "selectAll": "Select all that apply",
+      "responses_one": "{{count}} response",
+      "responses_other": "{{count}} responses",
+      "charts": {
+        "frustrations": {
+          "title": "What gets in the way?",
+          "labels": ["Hard to tell if a book covers the topic", "Exact titles / keywords feel outdated", "Resources are outdated or unavailable", "Finding the physical book takes too long"]
+        },
+        "discovery": {
+          "title": "Where do students search first?",
+          "labels": ["AI assistants", "Standard search engines", "University library portal", "Professor or peer"]
+        },
+        "behavior": {
+          "title": "Have students abandoned a search?",
+          "labels": ["Yes, occasionally", "Yes, frequently", "No, eventually find it", "Rarely use library search"]
+        },
+        "intent": {
+          "title": "What would conversational search change?",
+          "labels": ["Use the library significantly more", "Save hours per semester", "Discover beyond my major", "No change"]
+        }
+      }
+    },
+    "research": {
+      "eyebrow": "Research to prototype",
+      "title": "Built as research. Presented as a working system.",
+      "body": "We developed the idea as a research paper on NLP-based resource discovery for academic libraries. The work was accepted for conference presentation and is planned for publication in IEEE and indexing in Scopus.",
+      "meta": ["Conference paper", "NLP + semantic search", "Academic library discovery"],
+      "paperAlt": "First page of the NEXTLIB research paper",
+      "placeholderTitle": "Presentation evidence",
+      "placeholderBody": "Add the presentation photo here"
+    },
+    "demo": {
+      "eyebrow": "The working solution",
+      "title": "Ready to see NEXTLIB in action?",
+      "body": "Open the live demo and try a natural-language search across the academic catalogue.",
+      "cta": "Test the demo"
+    }
+  }
+}

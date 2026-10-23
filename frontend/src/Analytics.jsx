@@ -17,8 +17,8 @@ import {
 } from "recharts";
 import { BarChart2, Loader2, AlertCircle } from "lucide-react";
 import "./Analytics.css";
-
-const PIE_COLORS = ["#1f2f52", "#7a2e3a", "#b8862b", "#2f6b4f"];
+import { useI18n } from "./i18n/context.js";
+import useChartColors from "./theme/useChartColors.js";
 
 function StatCard({ label, value, sub }) {
   return (
@@ -30,10 +30,11 @@ function StatCard({ label, value, sub }) {
   );
 }
 
-// Renders a single P / R / F1 cell: coloured number + mini progress bar
+// Renders a single P / R / F1 cell: coloured number + mini progress bar.
+// Colours are CSS variables, so they follow the light/dark theme.
 function MetricCell({ v, bold }) {
   const color =
-    v >= 0.6 ? "#2f6b4f" : v >= 0.35 ? "#93651a" : "#a23b32";
+    v >= 0.6 ? "var(--success)" : v >= 0.35 ? "var(--warning)" : "var(--danger)";
   return (
     <td className="metric-cell">
       <span className="metric-val" style={{ color, fontWeight: bold ? 800 : 600 }}>
@@ -50,21 +51,22 @@ function MetricCell({ v, bold }) {
 }
 
 function Analytics() {
+  const { t, isRTL } = useI18n();
+  const colors = useChartColors();
+
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
 
   const [evalData, setEvalData] = useState(null);
   const [evalLoading, setEvalLoading] = useState(true);
-  const [evalError, setEvalError] = useState(null);
+  const [evalError, setEvalError] = useState(false);
 
   useEffect(() => {
     axios
       .get("http://127.0.0.1:5000/analytics")
       .then((res) => setData(res.data))
-      .catch(() =>
-        setError("Failed to load analytics. Make sure Flask is running.")
-      )
+      .catch(() => setError(true))
       .finally(() => setLoading(false));
   }, []);
 
@@ -72,27 +74,55 @@ function Analytics() {
     axios
       .get("http://127.0.0.1:5000/evaluate")
       .then((res) => setEvalData(res.data))
-      .catch(() => setEvalError("Failed to load evaluation metrics."))
+      .catch(() => setEvalError(true))
       .finally(() => setEvalLoading(false));
   }, []);
 
   if (loading) {
     return (
-      <div className="analytics-state">
-        <Loader2 className="spin" size={36} />
-        <p>Loading analytics…</p>
+      <div className="analytics-state" role="status">
+        <Loader2 className="spin" size={36} aria-hidden="true" />
+        <p>{t("analytics.loading")}</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="analytics-state error">
-        <AlertCircle size={36} />
-        <p>{error}</p>
+      <div className="analytics-state error" role="alert">
+        <AlertCircle size={36} aria-hidden="true" />
+        <p>{t("analytics.error")}</p>
       </div>
     );
   }
+
+  // Category labels that come from the API (modes, months) are translated when known.
+  const tLabel = (key, raw) => {
+    const value = t(key);
+    return value === key ? raw : value;
+  };
+
+  // ── Shared chart settings (theme colours + right-to-left mirroring) ──
+  const axisTick = { fontSize: 12, fill: colors.axis };
+  const tooltipProps = {
+    contentStyle: {
+      borderRadius: 12,
+      border: `1px solid ${colors.border}`,
+      background: colors.surface,
+      color: colors.text,
+      fontSize: 13,
+      boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+      direction: isRTL ? "rtl" : "ltr",
+      textAlign: "start",
+    },
+    labelStyle: { color: colors.text },
+    itemStyle: { color: colors.text },
+  };
+  const legendProps = { iconType: "circle", iconSize: 10 };
+  // In Arabic the category axis runs right-to-left and the value axis sits on the right.
+  const yAxisSide = isRTL ? "right" : "left";
+  const sideMargin = (inline, outer = 0) =>
+    isRTL ? { left: inline, right: outer } : { right: inline, left: outer };
 
   const totalSearches = data.engagement_trends.reduce(
     (s, r) => s + r.searches,
@@ -103,36 +133,46 @@ function Analytics() {
     0
   );
 
+  const modeData = data.mode_distribution.map((d) => ({
+    ...d,
+    label: tLabel(`analytics.modes.${d.mode}`, d.mode),
+  }));
+
+  const trendData = data.engagement_trends.map((d) => ({
+    ...d,
+    label: tLabel(`analytics.months.${d.month}`, d.month),
+  }));
+
   const f1ChartData = evalData
     ? evalData.rows.map((r) => ({
-        mode: r.mode,
-        Keyword: r.keyword.f1,
-        Semantic: r.semantic.f1,
+        mode: tLabel(`analytics.modes.${r.mode}`, r.mode),
+        keyword: r.keyword.f1,
+        semantic: r.semantic.f1,
       }))
     : [];
 
   return (
     <div className="analytics">
       <div className="analytics-header">
-        <BarChart2 size={30} />
+        <BarChart2 size={30} aria-hidden="true" />
         <div>
-          <h1>Analytics Dashboard</h1>
-          <p>Library usage insights derived from student activity data</p>
+          <h1>{t("analytics.title")}</h1>
+          <p>{t("analytics.subtitle")}</p>
         </div>
       </div>
 
       <div className="stat-row">
-        <StatCard label="Total Searches" value={totalSearches} sub="across all students" />
-        <StatCard label="Total Borrows" value={totalBorrows} sub="across all students" />
+        <StatCard label={t("analytics.stats.totalSearches")} value={totalSearches} sub={t("analytics.stats.allStudents")} />
+        <StatCard label={t("analytics.stats.totalBorrows")} value={totalBorrows} sub={t("analytics.stats.allStudents")} />
         <StatCard
-          label="Unique Topics"
+          label={t("analytics.stats.uniqueTopics")}
           value={data.top_searches.length}
-          sub="in top results"
+          sub={t("analytics.stats.topResults")}
         />
         <StatCard
-          label="Modes Detected"
+          label={t("analytics.stats.modesDetected")}
           value={data.mode_distribution.length}
-          sub="query patterns"
+          sub={t("analytics.stats.queryPatterns")}
         />
       </div>
 
@@ -140,38 +180,36 @@ function Analytics() {
         {/* ── Top Searched Topics ── */}
         <div className="chart-card span-2">
           <div className="chart-header">
-            <h2>Top Searched Topics</h2>
-            <p>Most frequent search queries from all students</p>
+            <h2>{t("analytics.topSearches.title")}</h2>
+            <p>{t("analytics.topSearches.sub")}</p>
           </div>
           <ResponsiveContainer width="100%" height={290}>
             <BarChart
               data={data.top_searches}
-              margin={{ top: 8, right: 16, left: 0, bottom: 64 }}
+              margin={{ top: 8, bottom: 64, ...sideMargin(16) }}
             >
-              <CartesianGrid strokeDasharray="3 3" stroke="#e4ddcf" vertical={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke={colors.grid} vertical={false} />
               <XAxis
                 dataKey="topic"
-                angle={-32}
-                textAnchor="end"
-                tick={{ fontSize: 12, fill: "#5f6470" }}
+                angle={isRTL ? 32 : -32}
+                textAnchor={isRTL ? "start" : "end"}
+                tick={axisTick}
+                stroke={colors.grid}
                 interval={0}
+                reversed={isRTL}
               />
               <YAxis
-                tick={{ fontSize: 12, fill: "#5f6470" }}
+                tick={axisTick}
                 axisLine={false}
                 tickLine={false}
+                orientation={yAxisSide}
               />
               <Tooltip
-                contentStyle={{
-                  borderRadius: 12,
-                  border: "1px solid #e4ddcf",
-                  fontSize: 13,
-                  boxShadow: "0 8px 24px rgba(20,33,61,0.10)",
-                }}
-                cursor={{ fill: "#f2f4f8" }}
-                formatter={(v) => [v, "Searches"]}
+                {...tooltipProps}
+                cursor={{ fill: colors.cursor }}
+                formatter={(v) => [v, t("analytics.topSearches.series")]}
               />
-              <Bar dataKey="count" fill="#1f2f52" radius={[6, 6, 0, 0]} name="Searches" />
+              <Bar dataKey="count" fill={colors.series1} radius={[6, 6, 0, 0]} name={t("analytics.topSearches.series")} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -179,44 +217,37 @@ function Analytics() {
         {/* ── Mode Distribution ── */}
         <div className="chart-card">
           <div className="chart-header">
-            <h2>Search Mode Distribution</h2>
-            <p>How students use each query mode</p>
+            <h2>{t("analytics.modeDist.title")}</h2>
+            <p>{t("analytics.modeDist.sub")}</p>
           </div>
           <ResponsiveContainer width="100%" height={230}>
             <PieChart>
               <Pie
-                data={data.mode_distribution}
+                data={modeData}
                 dataKey="value"
-                nameKey="mode"
+                nameKey="label"
                 cx="50%"
                 cy="50%"
                 outerRadius={90}
                 innerRadius={48}
                 paddingAngle={3}
+                stroke={colors.surface}
               >
-                {data.mode_distribution.map((_, i) => (
-                  <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />
+                {modeData.map((_, i) => (
+                  <Cell key={i} fill={colors.series[i % colors.series.length]} />
                 ))}
               </Pie>
-              <Tooltip
-                contentStyle={{
-                  borderRadius: 12,
-                  border: "1px solid #e4ddcf",
-                  fontSize: 13,
-                  boxShadow: "0 8px 24px rgba(20,33,61,0.10)",
-                }}
-                formatter={(v, name) => [v, name]}
-              />
+              <Tooltip {...tooltipProps} formatter={(v, name) => [v, name]} />
             </PieChart>
           </ResponsiveContainer>
           <div className="pie-legend">
-            {data.mode_distribution.map((item, i) => (
+            {modeData.map((item, i) => (
               <span key={item.mode} className="legend-item">
                 <span
                   className="legend-dot"
-                  style={{ background: PIE_COLORS[i % PIE_COLORS.length] }}
+                  style={{ background: colors.series[i % colors.series.length] }}
                 />
-                {item.mode}
+                {item.label}
                 <strong>{item.value}</strong>
               </span>
             ))}
@@ -226,51 +257,49 @@ function Analytics() {
         {/* ── Most Recommended Books ── */}
         <div className="chart-card">
           <div className="chart-header">
-            <h2>Most Recommended Books</h2>
-            <p>Titles appearing most across student recommendations</p>
+            <h2>{t("analytics.topBooks.title")}</h2>
+            <p>{t("analytics.topBooks.sub")}</p>
           </div>
           <ResponsiveContainer width="100%" height={280}>
             <BarChart
               data={data.top_books}
               layout="vertical"
-              margin={{ top: 4, right: 20, left: 4, bottom: 4 }}
+              margin={{ top: 4, bottom: 4, ...sideMargin(20, 4) }}
             >
               <CartesianGrid
                 strokeDasharray="3 3"
-                stroke="#e4ddcf"
+                stroke={colors.grid}
                 horizontal={false}
               />
               <XAxis
                 type="number"
-                tick={{ fontSize: 12, fill: "#5f6470" }}
+                tick={axisTick}
                 axisLine={false}
                 tickLine={false}
+                reversed={isRTL}
               />
               <YAxis
                 type="category"
                 dataKey="short_title"
                 width={118}
-                tick={{ fontSize: 11, fill: "#5f6470" }}
+                tick={{ ...axisTick, fontSize: 11 }}
                 axisLine={false}
                 tickLine={false}
+                orientation={yAxisSide}
               />
               <Tooltip
-                contentStyle={{
-                  borderRadius: 12,
-                  border: "1px solid #e4ddcf",
-                  fontSize: 13,
-                  boxShadow: "0 8px 24px rgba(20,33,61,0.10)",
-                }}
-                formatter={(v) => [v, "Recommendations"]}
+                {...tooltipProps}
+                cursor={{ fill: colors.cursor }}
+                formatter={(v) => [v, t("analytics.topBooks.series")]}
                 labelFormatter={(_, payload) =>
                   payload?.[0]?.payload?.title ?? ""
                 }
               />
               <Bar
                 dataKey="count"
-                fill="#7a2e3a"
-                radius={[0, 6, 6, 0]}
-                name="Recommendations"
+                fill={colors.series2}
+                radius={isRTL ? [6, 0, 0, 6] : [0, 6, 6, 0]}
+                name={t("analytics.topBooks.series")}
               />
             </BarChart>
           </ResponsiveContainer>
@@ -279,67 +308,58 @@ function Analytics() {
         {/* ── Student Engagement Trends ── */}
         <div className="chart-card span-2">
           <div className="chart-header">
-            <h2>Student Engagement Trends</h2>
-            <p>Monthly searches and borrows across the academic period</p>
+            <h2>{t("analytics.trends.title")}</h2>
+            <p>{t("analytics.trends.sub")}</p>
           </div>
           <ResponsiveContainer width="100%" height={270}>
             <AreaChart
-              data={data.engagement_trends}
-              margin={{ top: 8, right: 16, left: 0, bottom: 0 }}
+              data={trendData}
+              margin={{ top: 8, bottom: 0, ...sideMargin(16) }}
             >
               <defs>
                 <linearGradient id="gradSearch" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#1f2f52" stopOpacity={0.18} />
-                  <stop offset="95%" stopColor="#1f2f52" stopOpacity={0} />
+                  <stop offset="5%" stopColor={colors.series1} stopOpacity={0.18} />
+                  <stop offset="95%" stopColor={colors.series1} stopOpacity={0} />
                 </linearGradient>
                 <linearGradient id="gradBorrow" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#7a2e3a" stopOpacity={0.18} />
-                  <stop offset="95%" stopColor="#7a2e3a" stopOpacity={0} />
+                  <stop offset="5%" stopColor={colors.series2} stopOpacity={0.18} />
+                  <stop offset="95%" stopColor={colors.series2} stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e4ddcf" vertical={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke={colors.grid} vertical={false} />
               <XAxis
-                dataKey="month"
-                tick={{ fontSize: 13, fill: "#5f6470" }}
+                dataKey="label"
+                tick={{ ...axisTick, fontSize: 13 }}
                 axisLine={false}
                 tickLine={false}
+                reversed={isRTL}
               />
               <YAxis
-                tick={{ fontSize: 12, fill: "#5f6470" }}
+                tick={axisTick}
                 axisLine={false}
                 tickLine={false}
+                orientation={yAxisSide}
               />
-              <Tooltip
-                contentStyle={{
-                  borderRadius: 12,
-                  border: "1px solid #e4ddcf",
-                  fontSize: 13,
-                  boxShadow: "0 8px 24px rgba(20,33,61,0.10)",
-                }}
-              />
-              <Legend
-                wrapperStyle={{ fontSize: 13, paddingTop: 14 }}
-                iconType="circle"
-                iconSize={10}
-              />
+              <Tooltip {...tooltipProps} />
+              <Legend {...legendProps} wrapperStyle={{ fontSize: 13, paddingTop: 14 }} />
               <Area
                 type="monotone"
                 dataKey="searches"
-                stroke="#1f2f52"
+                stroke={colors.series1}
                 strokeWidth={2.5}
                 fill="url(#gradSearch)"
-                name="Searches"
-                dot={{ r: 4, fill: "#1f2f52", strokeWidth: 0 }}
+                name={t("analytics.trends.searches")}
+                dot={{ r: 4, fill: colors.series1, strokeWidth: 0 }}
                 activeDot={{ r: 6 }}
               />
               <Area
                 type="monotone"
                 dataKey="borrows"
-                stroke="#7a2e3a"
+                stroke={colors.series2}
                 strokeWidth={2.5}
                 fill="url(#gradBorrow)"
-                name="Borrows"
-                dot={{ r: 4, fill: "#7a2e3a", strokeWidth: 0 }}
+                name={t("analytics.trends.borrows")}
+                dot={{ r: 4, fill: colors.series2, strokeWidth: 0 }}
                 activeDot={{ r: 6 }}
               />
             </AreaChart>
@@ -352,67 +372,58 @@ function Analytics() {
           ════════════════════════════════════════ */}
       <div className="perf-section">
         <div className="perf-section-header">
-          <h2>Search Performance: Keyword vs Semantic</h2>
-          <p>
-            Precision, Recall, F1, MAP, NDCG, and MRR at K&#8202;=&#8202;10, evaluated on fixed test queries.
-            Ground truth: books whose library subject tags match the query topic.
-          </p>
+          <h2>{t("analytics.perf.title")}</h2>
+          <p>{t("analytics.perf.intro")}</p>
         </div>
 
         {evalLoading ? (
-          <div className="analytics-state" style={{ minHeight: "160px" }}>
-            <Loader2 className="spin" size={28} />
-            <p>Computing evaluation metrics…</p>
+          <div className="analytics-state" style={{ minHeight: "160px" }} role="status">
+            <Loader2 className="spin" size={28} aria-hidden="true" />
+            <p>{t("analytics.perf.loading")}</p>
           </div>
         ) : evalError ? (
-          <div className="analytics-state error" style={{ minHeight: "120px" }}>
-            <AlertCircle size={28} />
-            <p>{evalError}</p>
+          <div className="analytics-state error" style={{ minHeight: "120px" }} role="alert">
+            <AlertCircle size={28} aria-hidden="true" />
+            <p>{t("analytics.perf.error")}</p>
           </div>
         ) : (
           <>
             {/* F1 grouped bar chart */}
             <div className="chart-card perf-chart">
               <div className="chart-header">
-                <h3>F1 Score by Mode</h3>
-                <p>Higher is better — semantic (navy) vs keyword baseline (grey)</p>
+                <h3>{t("analytics.perf.f1Title")}</h3>
+                <p>{t("analytics.perf.f1Sub")}</p>
               </div>
               <ResponsiveContainer width="100%" height={210}>
                 <BarChart
                   data={f1ChartData}
-                  margin={{ top: 8, right: 16, left: 0, bottom: 4 }}
+                  margin={{ top: 8, bottom: 4, ...sideMargin(16) }}
                   barCategoryGap="32%"
                 >
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e4ddcf" vertical={false} />
+                  <CartesianGrid strokeDasharray="3 3" stroke={colors.grid} vertical={false} />
                   <XAxis
                     dataKey="mode"
-                    tick={{ fontSize: 13, fill: "#5f6470" }}
+                    tick={{ ...axisTick, fontSize: 13 }}
                     axisLine={false}
                     tickLine={false}
+                    reversed={isRTL}
                   />
                   <YAxis
                     domain={[0, 1]}
-                    tick={{ fontSize: 12, fill: "#5f6470" }}
+                    tick={axisTick}
                     axisLine={false}
                     tickLine={false}
                     tickFormatter={(v) => v.toFixed(1)}
+                    orientation={yAxisSide}
                   />
                   <Tooltip
-                    contentStyle={{
-                      borderRadius: 12,
-                      border: "1px solid #e4ddcf",
-                      fontSize: 13,
-                      boxShadow: "0 8px 24px rgba(20,33,61,0.10)",
-                    }}
+                    {...tooltipProps}
+                    cursor={{ fill: colors.cursor }}
                     formatter={(v, name) => [v.toFixed(3), name]}
                   />
-                  <Legend
-                    wrapperStyle={{ fontSize: 13, paddingTop: 10 }}
-                    iconType="circle"
-                    iconSize={10}
-                  />
-                  <Bar dataKey="Keyword" fill="#b3ad9f" radius={[5, 5, 0, 0]} />
-                  <Bar dataKey="Semantic" fill="#1f2f52" radius={[5, 5, 0, 0]} />
+                  <Legend {...legendProps} wrapperStyle={{ fontSize: 13, paddingTop: 10 }} />
+                  <Bar dataKey="keyword" name={t("analytics.perf.keyword")} fill={colors.baseline} radius={[5, 5, 0, 0]} />
+                  <Bar dataKey="semantic" name={t("analytics.perf.semantic")} fill={colors.series1} radius={[5, 5, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -420,24 +431,22 @@ function Analytics() {
             {/* Full P / R / F1 detail table */}
             <div className="chart-card">
               <div className="chart-header">
-                <h3>Full Metrics Table</h3>
-                <p>
-                  P · R · F1 · MAP · NDCG · MRR at K&#8202;=&#8202;{evalData.k} per mode — green ≥ 0.6, amber ≥ 0.35, red &lt; 0.35
-                </p>
+                <h3>{t("analytics.perf.tableTitle")}</h3>
+                <p>{t("analytics.perf.tableSub", { k: evalData.k })}</p>
               </div>
               <div className="table-scroll">
                 <table className="perf-table">
                   <thead>
                     <tr>
-                      <th rowSpan={2} className="th-mode">Mode</th>
-                      <th rowSpan={2} className="th-center th-narrow">Queries</th>
+                      <th rowSpan={2} className="th-mode">{t("analytics.perf.colMode")}</th>
+                      <th rowSpan={2} className="th-center th-narrow">{t("analytics.perf.colQueries")}</th>
                       <th colSpan={6} className="th-center th-group th-kw">
-                        Keyword Search (Baseline)
+                        {t("analytics.perf.groupKeyword")}
                       </th>
                       <th colSpan={6} className="th-center th-group th-sem">
-                        Semantic Search
+                        {t("analytics.perf.groupSemantic")}
                       </th>
-                      <th rowSpan={2} className="th-center th-narrow">&#916;F1</th>
+                      <th rowSpan={2} className="th-center th-narrow">{t("analytics.perf.delta")}</th>
                     </tr>
                     <tr>
                       {["P", "R", "F1", "MAP", "NDCG", "MRR", "P", "R", "F1", "MAP", "NDCG", "MRR"].map((h, i) => (
@@ -453,7 +462,7 @@ function Analytics() {
                       const pos = delta >= 0;
                       return (
                         <tr key={row.mode}>
-                          <td className="td-mode">{row.mode}</td>
+                          <td className="td-mode">{tLabel(`analytics.modes.${row.mode}`, row.mode)}</td>
                           <td className="td-center td-sub">{row.queries_tested}</td>
                           <MetricCell v={row.keyword.precision} />
                           <MetricCell v={row.keyword.recall} />
@@ -467,7 +476,7 @@ function Analytics() {
                           <MetricCell v={row.semantic.map} />
                           <MetricCell v={row.semantic.ndcg} />
                           <MetricCell v={row.semantic.mrr} />
-                          <td className={`td-delta ${pos ? "pos" : "neg"}`}>
+                          <td className={`td-delta ${pos ? "pos" : "neg"}`} dir="ltr">
                             {pos ? "+" : ""}
                             {delta.toFixed(3)}
                           </td>
@@ -477,7 +486,13 @@ function Analytics() {
                   </tbody>
                 </table>
               </div>
-              <p className="methodology-note">{evalData.methodology}</p>
+              <p className="methodology-note">
+                {t("analytics.perf.methodologyLabel") && (
+                  <span className="methodology-label">{t("analytics.perf.methodologyLabel")} </span>
+                )}
+                {/* Methodology text comes from the evaluation API and is shown as-is (English). */}
+                <span lang="en" dir="ltr">{evalData.methodology}</span>
+              </p>
             </div>
           </>
         )}
